@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title>Books</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<h1>Kirjat</h1>
+		<label for="username">Sisäänkirjautunut käyttäjätunnus: </label>
+	<i th:text="${username}"> </i> 
+	
+	
+	<p>(Sijoitus 1=huonoin...5=paras)</p>
+	<table>
+		<tr>
+			<th>Id</th>
+			<th>Nimi</th>
+			<th>Kirjailija</th>
+			<th>Vuosi</th>
+			<th>Hinta</th>
+			<th>Sijoitus (1-5)</th>
+			<th>Kategoria</th>
+			<th>Toimenpiteet</th>
+		<tr th:each="book : ${books}">
+		<td th:text="${book.id}"></td>
+			<td th:text="${book.title}"></td>
+			<td th:text="${book.author}"></td>
+			<td th:text="${book.year}"></td>
+			<td th:text="${book.price}"></td>
+			<td th:text="${book.ranking}"></td>
+			<td th:text="${book.category.name}"></td>			
+			<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/delete/{id}(id=${book.id})}">Poista</a></td>
+			<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/edit/{id}(id=${book.id})}">Muokkaa</a></td>
+		</tr>
+	</table>
+	<a sec:authorize="hasAuthority('ADMIN')" href="/addBook">Lisää uusi kirja</a>
+</body>
+</html>
